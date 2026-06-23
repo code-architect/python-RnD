@@ -204,7 +204,7 @@ class DatabaseMongoDB(InterfaceDatabase):
 
 
 
-
+"""
 from pprint import pprint
 from DatabaseMongoDB import DatabaseMongoDB
 
@@ -240,13 +240,13 @@ pprint(rows)
 single_row = db.get_calculation_by_id(new_id)
 pprint(single_row)
 
-"""
+
 # DELETE
 deleted = db.delete_calculation(new_id)
 print("Deleted:", deleted)
-"""
-db.close()
 
+db.close()
+"""
 
 
 
