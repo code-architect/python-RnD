@@ -1,4 +1,7 @@
 from pprint import pprint
+from dataclasses import dataclass
+
+
 """
 class Node:
     def __init__(self, data):
@@ -31,6 +34,7 @@ if __name__ == "__main__":
     printNodes(llist.head)
 """
 
+"""
 class Node:
     def __init__(self, data):
         self.data = data
@@ -62,8 +66,24 @@ if __name__ == "__main__":
             node  = node.next
     
     printNodes(llist.head)
+"""
 
+#class 
+"""
 
+"""
+class Mammal:
+    def __init__(self, name, age):
+        self.name = name
+        self.age = age
+    
+    def eat(self):
+        return "Munch munch..."
+
+class Dog(Mammal):
+    def __init__(self, name, age):
+        super().__init__(name, age)
+            
 
 
 

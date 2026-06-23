@@ -1,0 +1,2438 @@
+@startuml
+
+!theme plain
+top to bottom direction
+skinparam linetype ortho
+
+class auth_group {
+   name: varchar(150)
+   id: int
+}
+class auth_group_permissions {
+   group_id: int
+   permission_id: int
+   id: int
+}
+class auth_permission {
+   name: varchar(255)
+   content_type_id: int
+   codename: varchar(100)
+   id: int
+}
+class auth_user {
+   password: varchar(128)
+   last_login: datetime(6)
+   is_superuser: tinyint(1)
+   username: varchar(150)
+   first_name: varchar(150)
+   last_name: varchar(150)
+   email: varchar(256)
+   is_staff: tinyint(1)
+   is_active: tinyint(1)
+   date_joined: datetime(6)
+   id: int
+}
+class auth_user_groups {
+   user_id: int
+   group_id: int
+   id: int
+}
+class auth_user_user_permissions {
+   user_id: int
+   permission_id: int
+   id: int
+}
+class cmpf_ltgs_le {
+   legal_entity_id: int
+   country_id: int
+   business_grp_id: int
+   le_name: varchar(100)
+   contract_from: date
+   contract_to: date
+   logo: varchar(200)
+   logo_size: float
+   file_space_lmt: float
+   used_file_space: float
+   totl_licn: int
+   used_licn: int
+   is_clsd: tinyint
+   clsd_on: timestamp
+   clsd_by: int
+   clsd_remarks: varchar(500)
+   ltgs_aprvl: tinyint
+   crdt_by: int
+   crdt_on: timestamp
+   updt_by: int
+   updt_on: timestamp
+   client_type: int
+   enable_trigger: int
+   hierarchy_status: tinyint
+   vertical_status: tinyint
+   zone_status: tinyint
+   billing_scope_status: tinyint
+   le_id: int
+}
+class cmpf_ltgs_le_contract_hist {
+   le_id: int
+   legal_entity_id: int
+   country_id: int
+   business_grp_id: int
+   le_name: varchar(100)
+   contract_from: date
+   contract_to: date
+   logo: varchar(200)
+   logo_size: float
+   file_space_lmt: float
+   used_file_space: float
+   totl_licn: int
+   used_licn: int
+   is_clsd: tinyint
+   clsd_on: timestamp
+   clsd_by: int
+   clsd_remarks: varchar(500)
+   ltgs_aprvl: tinyint
+   crdt_by: int
+   crdt_on: timestamp
+   updt_by: int
+   updt_on: timestamp
+   client_type: int
+   hierarchy_status: tinyint
+   vertical_status: tinyint
+   zone_status: tinyint
+   billing_scope_status: tinyint
+   le_hist_id: int
+}
+class cmpf_ltgs_le_dmn {
+   le_id: int
+   dmn_id: int
+   unt_cnt: int
+   crdt_by: int
+   crdt_on: timestamp
+   updt_by: int
+   updt_on: timestamp
+   enable_trigger: int
+   le_dmn_id: int
+}
+class cmpf_ltgs_le_dmn_hist {
+   le_dmn_id: int
+   le_id: int
+   dmn_id: int
+   unt_cnt: int
+   crdt_by: int
+   crdt_on: timestamp
+   updt_by: int
+   updt_on: timestamp
+   le_dmn_hist_id: int
+}
+class cmpf_ltgs_mstr {
+   mstr_type_id: int
+   dmn_ids: text
+   data_val: varchar(50)
+   is_active: tinyint
+   crdt_by: int
+   crdt_on: timestamp
+   updt_by: int
+   updt_on: timestamp
+   enable_trigger: int
+   knwldg_mstr_id: int
+}
+class cmpf_ltgs_mstr_type {
+   data_name: varchar(50)
+   is_domain: tinyint
+   is_active: tinyint
+   created_by: int
+   created_on: timestamp
+   updated_by: int
+   updated_on: timestamp
+   mstr_type_id: int
+}
+class cmpf_ltgs_unit_dmn {
+   unit_id: int
+   dmn_id: int
+   is_delete: tinyint(1)
+   is_new: int
+   is_new_mapping: tinyint(1)
+   unit_dmn_id: int
+}
+class django_admin_log {
+   action_time: datetime(6)
+   object_id: longtext
+   object_repr: varchar(200)
+   action_flag: smallint unsigned
+   change_message: longtext
+   content_type_id: int
+   user_id: int
+   id: int
+}
+class django_content_type {
+   app_label: varchar(100)
+   model: varchar(100)
+   id: int
+}
+class django_migrations {
+   app: varchar(255)
+   name: varchar(255)
+   applied: datetime(6)
+   id: int
+}
+class django_session {
+   session_data: longtext
+   expire_date: datetime(6)
+   session_key: varchar(40)
+}
+class sso_internal_persistentid {
+   persistent_id: char(32)
+   created: datetime(6)
+   sp_id: int
+   user_id: int
+   id: int
+}
+class sso_internal_serviceprovider {
+   dt_created: datetime(6)
+   dt_updated: datetime(6)
+   entity_id: varchar(255)
+   pretty_name: varchar(255)
+   sp_description: longtext
+   metadata_expiration_dt: datetime(6)
+   remote_metadata_url: varchar(512)
+   local_metadata: longtext
+   is_active: tinyint(1)
+   _processor: varchar(256)
+   _attribute_mapping: longtext
+   _nameid_field: varchar(64)
+   _sign_response: tinyint(1)
+   _sign_assertion: tinyint(1)
+   _signing_algorithm: varchar(256)
+   _digest_algorithm: varchar(256)
+   _encrypt_saml_responses: tinyint(1)
+   id: int
+}
+class tbl_activity_log {
+   user_category_id: int
+   user_id: int
+   form_id: int
+   action: varchar(500)
+   created_on: timestamp
+   activity_log_id: int
+}
+class tbl_application_server {
+   machine_name: varchar(50)
+   ip: varchar(20)
+   port: int
+   client_ids: longtext
+   created_by: int
+   created_on: timestamp
+   updated_by: int
+   updated_on: timestamp
+   product_id: int
+   machine_id: int
+}
+class tbl_approve_status {
+   approve_status: varchar(20)
+   approve_status_id: int
+}
+class tbl_audit_log {
+   tbl_name: varchar(100)
+   tbl_auto_id: int
+   column_name: varchar(100)
+   value: longtext
+   client_id: int
+   legal_entity_id: int
+   action: varchar(20)
+   audit_trail_id: int
+}
+class tbl_auto_deletion {
+   client_id: int
+   legal_entity_id: int
+   unit_id: int
+   deletion_period: int
+   created_by: int
+   created_on: timestamp
+   updated_by: int
+   updated_on: timestamp
+   deletion_id: int
+}
+class tbl_business_groups {
+   client_id: int
+   business_group_name: varchar(100)
+   created_by: int
+   created_on: timestamp
+   updated_by: int
+   updated_on: timestamp
+   enable_trigger: int
+   reco_business_group_id: int
+   business_group_id: int
+}
+class tbl_categories {
+   client_id: int
+   category_name: varchar(100)
+   legal_entity_id: int
+   business_group_id: int
+   division_id: int
+   created_by: int
+   created_on: timestamp
+   updated_by: int
+   updated_on: timestamp
+   enable_trigger: int
+   category_id: int
+}
+class tbl_client_activity_log {
+   client_id: int
+   legal_entity_id: int
+   unit_id: int
+   user_category_id: int
+   user_id: int
+   form_id: int
+   action: varchar(500)
+   created_on: timestamp
+   client_activity_log_id: int
+}
+class tbl_client_compliances {
+   client_statutory_id: int
+   client_id: int
+   legal_entity_id: int
+   unit_id: int
+   domain_id: int
+   statutory_id: int
+   statutory_applicable_status: tinyint
+   statutory_opted_status: tinyint
+   remarks: varchar(500)
+   compliance_applicable_status: tinyint
+   compliance_opted_status: tinyint
+   not_opted_remarks: longtext
+   is_saved: tinyint
+   saved_by: int
+   saved_on: timestamp
+   is_approved: tinyint
+   approved_by: int
+   approved_on: timestamp
+   is_submitted: tinyint
+   submitted_by: int
+   submitted_on: timestamp
+   updated_by: int
+   updated_on: timestamp
+   client_opted_by: int
+   client_opted_on: timestamp
+   enable_trigger: int
+   event_id: int
+   client_compliance_id: int
+   compliance_id: int
+}
+class tbl_client_compliances_dns {
+   client_statutory_id: int
+   client_id: int
+   legal_entity_id: int
+   unit_id: int
+   domain_id: int
+   statutory_id: int
+   statutory_applicable_status: tinyint
+   statutory_opted_status: tinyint
+   remarks: varchar(500)
+   compliance_applicable_status: tinyint
+   compliance_opted_status: tinyint
+   not_opted_remarks: longtext
+   is_saved: tinyint
+   saved_by: int
+   saved_on: timestamp
+   is_approved: tinyint
+   approved_by: int
+   approved_on: timestamp
+   is_submitted: tinyint
+   submitted_by: int
+   submitted_on: timestamp
+   updated_by: int
+   updated_on: timestamp
+   event_id: int
+   client_compliance_id_dns: int
+   compliance_id: int
+}
+class tbl_client_conf_removal_history {
+   cn_config_id: int
+   client_id: int
+   country_id: int
+   domain_id: int
+   month_from: int
+   month_to: int
+   remarks: varchar(500)
+   created_by: int
+   created_on: timestamp
+   approval_status: int
+   hst_id: int
+}
+class tbl_client_configuration {
+   client_id: int
+   country_id: int
+   domain_id: int
+   month_from: int
+   month_to: int
+   updated_by: int
+   updated_on: timestamp
+   enable_trigger: int
+   cn_config_id: int
+}
+class tbl_client_database {
+   client_id: int
+   client_database_server_id: int
+   legal_entity_id: int
+   machine_id: int
+   file_server_id: int
+   database_server_id: int
+   client_storage_server_id: int
+   is_client_storage: tinyint
+   created_by: int
+   created_on: timestamp
+   updated_by: int
+   updated_on: timestamp
+   product_id: int
+   general_use: int
+   client_database_id: int
+}
+class tbl_client_database_info {
+   client_database_id: int
+   db_owner_id: int
+   database_username: varchar(50)
+   database_password: varchar(50)
+   database_name: varchar(50)
+   is_group: tinyint(1)
+}
+class tbl_client_email_verification {
+   client_id: int
+   email_id: varchar(256)
+   verification_code: varchar(50)
+   verification_type_id: int
+   expiry_date: timestamp
+}
+class tbl_client_forms {
+   form_name: varchar(200)
+   form_url: text
+   form_type_id: int
+   parent_menu: varchar(200)
+   form_order: int
+   form_id: int
+}
+class tbl_client_group_detail_history {
+   client_id: int
+   group_name: varchar(50)
+   short_name: varchar(20)
+   email_id: varchar(100)
+   total_view_licence: int
+   remarks: varchar(500)
+   created_on: timestamp
+   updated_on: timestamp
+   is_apply_ip_settings: tinyint
+   otp_required: tinyint(1)
+   otp_remarks: varchar(500)
+   enable_ltgs_mstr: tinyint
+   is_sso_enabled: tinyint(1)
+   custom_report_status: tinyint(1)
+   classic_access: tinyint(1)
+   approve_status: tinyint
+   enable_trigger: int
+   client_history_id: int
+}
+class tbl_client_groups {
+   group_name: varchar(50)
+   short_name: varchar(20)
+   email_id: varchar(256)
+   group_admin_username: varchar(20)
+   total_view_licence: int
+   used_view_licence: int
+   is_active: tinyint
+   remarks: varchar(500)
+   status_changed_on: timestamp
+   is_approved: tinyint
+   approved_by: int
+   approved_on: timestamp
+   created_by: int
+   created_on: timestamp
+   updated_by: int
+   updated_on: timestamp
+   is_apply_ip_settings: tinyint
+   enable_ltgs_mstr: tinyint
+   otp_required: tinyint(1)
+   otp_remarks: varchar(500)
+   is_sso_enabled: tinyint(1)
+   custom_report_status: tinyint(1)
+   enable_trigger: int
+   classic_access: tinyint(1)
+   reco_client_id: int
+   client_id: int
+}
+class tbl_client_groups_history {
+   client_id: int
+   group_name: varchar(50)
+   short_name: varchar(20)
+   email_id: varchar(256)
+   total_view_licence: int
+   remarks: varchar(500)
+   updated_by: int
+   updated_on: timestamp
+   is_apply_ip_settings: tinyint
+   otp_required: tinyint(1)
+   otp_remarks: varchar(500)
+   enable_ltgs_mstr: tinyint
+   is_sso_enabled: tinyint(1)
+   custom_report_status: tinyint(1)
+   classic_access: tinyint(1)
+   client_history_id: int
+}
+class tbl_client_replication_status {
+   client_id: int
+   is_new_data: tinyint
+   is_new_domain: tinyint
+   domain_id: varchar(50)
+   is_group: tinyint
+}
+class tbl_client_replication_updation {
+   client_id: int
+   is_group: tinyint(1)
+   upd_tbl_name: varchar(100)
+   upd_key_id: int
+   upd_column_name: varchar(100)
+   upd_old_value: longtext
+   upd_new_value: longtext
+   is_approved: tinyint(1)
+   updated_on: timestamp
+   updated_by: int
+   approved_on: timestamp
+   approved_by: int
+   upd_id: int
+}
+class tbl_client_reports {
+   client_id: int
+   rpt_url: varchar(50)
+   status: tinyint(1)
+   order: tinyint(1)
+   remarks: varchar(500)
+   created_on: datetime
+   created_by: int
+   id: int
+}
+class tbl_client_statutories {
+   client_id: int
+   unit_id: int
+   domain_id: int
+   status: tinyint
+   reason: varchar(500)
+   approved_by: int
+   approved_on: timestamp
+   enable_trigger: int
+   client_statutory_id: int
+}
+class tbl_client_storage_server {
+   client_id: int
+   client_storage_server_code: varchar(30)
+   ip: varchar(20)
+   port: int
+   legal_entity_ids: longtext
+   username: varchar(50)
+   password: varchar(50)
+   created_by: int
+   created_on: timestamp
+   updated_by: int
+   updated_on: timestamp
+   client_storage_server_id: int
+}
+class tbl_client_type {
+   client_type_name: varchar(50)
+   client_type_id: int
+}
+class tbl_client_user_category {
+   user_category_name: varchar(50)
+   user_category_id: int
+}
+class tbl_client_users {
+   user_id: int
+   user_category_id: int
+   user_type_id: int
+   vndr_user_category: int
+   client_id: int
+   seating_unit_id: int
+   service_provider_id: int
+   user_level: int
+   email_id: varchar(256)
+   employee_name: varchar(50)
+   employee_code: varchar(50)
+   contact_no: varchar(20)
+   mobile_no: varchar(20)
+   address: varchar(500)
+   is_service_provider: tinyint
+   is_active: tinyint
+   status_changed_on: timestamp
+   is_disable: tinyint
+   disabled_on: timestamp
+   legal_entity_ids: text
+}
+class tbl_cmpf_vndr_le {
+   le_id: int
+   country_id: int
+   business_grp_id: int
+   vndr_le_name: varchar(100)
+   contract_from: date
+   contract_to: date
+   logo: varchar(200)
+   logo_size: float
+   file_space_lmt: float
+   used_file_space: float
+   totl_licn: int
+   used_licn: int
+   is_clsd: tinyint
+   clsd_on: timestamp
+   clsd_by: int
+   clsd_remarks: varchar(500)
+   crdt_by: int
+   crdt_on: timestamp
+   updt_by: int
+   updt_on: timestamp
+   client_type: int
+   enable_trigger: int
+   vndr_le_id: int
+}
+class tbl_cmpf_vndr_le_contract_hstry {
+   vndr_le_id: int
+   legal_entity_id: int
+   country_id: int
+   business_grp_id: int
+   le_name: varchar(100)
+   contract_from: date
+   contract_to: date
+   logo: varchar(200)
+   logo_size: float
+   file_space_lmt: float
+   used_file_space: float
+   totl_licn: int
+   used_licn: int
+   is_clsd: tinyint
+   clsd_on: timestamp
+   clsd_by: int
+   clsd_remarks: varchar(500)
+   crdt_by: int
+   crdt_on: timestamp
+   updt_by: int
+   updt_on: timestamp
+   client_type: int
+   le_hist_id: int
+}
+class tbl_cmpf_vndr_le_dmn {
+   le_id: int
+   dmn_id: int
+   org_id: int
+   actvt_dt: timestamp
+   vndr_cnt: int
+   crdt_by: int
+   crdt_on: timestamp
+   enable_trigger: int
+   vndr_le_dmn_id: int
+}
+class tbl_cmpf_vndr_le_dmn_hstry {
+   vndr_le_dmn_id: int
+   le_id: int
+   dmn_id: int
+   org_id: int
+   actvt_dt: timestamp
+   vndr_cnt: int
+   crdt_by: int
+   crdt_on: timestamp
+   vndr_le_hist_id: int
+}
+class tbl_cmpf_vndr_unts_orgs {
+   vndr_id: int
+   dmn_id: int
+   org_id: int
+   is_delete: tinyint(1)
+   is_new: int
+   is_new_mapping: tinyint(1)
+   vndr_org_id: int
+}
+class tbl_compliance_criticality {
+   criticality_name: varchar(5)
+   criticality_description: varchar(50)
+   criticality_id: int
+}
+class tbl_compliance_docs {
+   compliance_id: int
+   document_name: varchar(100)
+   format_file: longtext
+   format_file_size: float
+   is_active: tinyint(1)
+   added_on: timestamp
+   removed_on: timestamp
+   id: int
+}
+class tbl_compliance_due_extn {
+   compliance_id: int
+   comp_hst_id: int
+   statu_due_mode: tinyint(1)
+   statu_due_month: int
+   statu_due_year: int
+   compliance_due_date: date
+   extn_due_date: date
+   documents: longtext
+   geography_id: longtext
+   remarks: varchar(500)
+   remarks_approver: varchar(500)
+   is_approved: tinyint(1)
+   approved_by: int
+   approved_on: timestamp
+   created_by: int
+   created_on: timestamp
+   updated_by: int
+   updated_on: timestamp
+   enable_trigger: int
+   creation_tag: int
+   extn_id: int
+}
+class tbl_compliance_due_extn_hst {
+   extn_id: int
+   compliance_id: int
+   comp_hst_id: int
+   statu_due_mode: tinyint(1)
+   statu_due_month: int
+   statu_due_year: int
+   compliance_due_date: date
+   extn_due_date: date
+   documents: longtext
+   geography_id: longtext
+   remarks: varchar(500)
+   remarks_approver: varchar(500)
+   is_approved: tinyint(1)
+   approved_by: int
+   approved_on: timestamp
+   created_by: int
+   created_on: timestamp
+   updated_by: int
+   updated_on: timestamp
+   enable_trigger: int
+   extn_history_id: int
+}
+class tbl_compliance_duration_type {
+   duration_type: varchar(20)
+   duration_type_id: int
+}
+class tbl_compliance_frequency {
+   frequency: varchar(20)
+   frequency_id: int
+}
+class tbl_compliance_repeat_type {
+   repeat_type: varchar(20)
+   repeat_type_id: int
+}
+class tbl_compliance_staging {
+   compliance_id: int
+   effective_date: date
+   statutory_mapping: text
+   country_id: int
+   domain_id: int
+   statutory_provision: varchar(500)
+   compliance_task: varchar(200)
+   document_name: varchar(100)
+   compliance_description: longtext
+   penal_consequences: longtext
+   reference_link: varchar(500)
+   frequency_id: int
+   statutory_dates: longtext
+   repeats_type_id: int
+   duration_type_id: int
+   repeats_every: int
+   duration: int
+   is_active: tinyint(1)
+   is_approved_sgh: tinyint(1)
+   remarks: varchar(500)
+   format_file: longtext
+   format_file_size: float
+   cs_created_by: int
+   cs_created_on: timestamp
+   cs_approved_by: int
+   cs_approved_on: timestamp
+   organisation_ids: longtext
+   statutory_ids: longtext
+   geography_ids: longtext
+   statutory_nature_id: int
+   compf_law_ref: varchar(500)
+   action_type: tinyint(1)
+   updated_by: int
+   updated_on: timestamp
+   criticality_id: int
+   enable_trigger: int
+   statutory_effective_date: date
+   is_governed: tinyint(1)
+   task_group_id: int
+   task_sub_group_id: int
+   format_file_list: longtext
+   show_validity_date: tinyint(1)
+   is_doc_mandatory: tinyint(1)
+   statutory_id: int
+   staging_id: int
+}
+class tbl_compliance_update_history {
+   compliance_id: int
+   effective_date: date
+   statutory_mapping: text
+   country_id: int
+   domain_id: int
+   task_group_id: int
+   task_sub_group_id: int
+   task_code: varchar(20)
+   statutory_provision: varchar(500)
+   compliance_task: varchar(200)
+   document_name: varchar(100)
+   compliance_description: longtext
+   penal_consequences: longtext
+   reference_link: varchar(500)
+   frequency_id: int
+   statutory_dates: longtext
+   repeats_type_id: int
+   duration_type_id: int
+   repeats_every: int
+   duration: int
+   is_active: tinyint(1)
+   status_changed_on: timestamp
+   is_approved_ch: tinyint(1)
+   cuh_created_by: int
+   cuh_created_on: timestamp
+   approved_by: int
+   approved_on: timestamp
+   remarks: varchar(500)
+   format_file: longtext
+   format_file_size: float
+   updated_by: int
+   statutory_id: int
+   statutory_nature_id: int
+   compf_law_ref: varchar(500)
+   updated_on: timestamp
+   change_mode: int
+   criticality_id: int
+   enable_trigger: int
+   statutory_effective_date: date
+   is_governed: tinyint(1)
+   show_validity_date: tinyint(1)
+   is_doc_mandatory: tinyint(1)
+   history_id: int
+}
+class tbl_compliance_update_history_22092023 {
+   history_id: int
+   compliance_id: int
+   effective_date: date
+   statutory_mapping: text
+   country_id: int
+   domain_id: int
+   task_group_id: int
+   task_sub_group_id: int
+   task_code: varchar(20)
+   statutory_provision: varchar(500)
+   compliance_task: varchar(200)
+   document_name: varchar(100)
+   compliance_description: longtext
+   penal_consequences: longtext
+   reference_link: varchar(500)
+   frequency_id: int
+   statutory_dates: longtext
+   repeats_type_id: int
+   duration_type_id: int
+   repeats_every: int
+   duration: int
+   is_active: tinyint(1)
+   status_changed_on: timestamp
+   is_approved_ch: tinyint(1)
+   cuh_created_by: int
+   cuh_created_on: timestamp
+   approved_by: int
+   approved_on: timestamp
+   remarks: varchar(500)
+   format_file: longtext
+   format_file_size: float
+   updated_by: int
+   statutory_id: int
+   statutory_nature_id: int
+   compf_law_ref: varchar(500)
+   updated_on: timestamp
+   change_mode: int
+   criticality_id: int
+   enable_trigger: int
+   statutory_effective_date: date
+   is_governed: tinyint(1)
+}
+class tbl_compliances {
+   effective_date: date
+   statutory_mapping: text
+   country_id: int
+   domain_id: int
+   task_group_id: int
+   task_sub_group_id: int
+   statutory_provision: varchar(500)
+   compliance_task: varchar(200)
+   document_name: varchar(100)
+   compliance_description: longtext
+   penal_consequences: longtext
+   reference_link: varchar(500)
+   frequency_id: int
+   statutory_dates: longtext
+   repeats_type_id: int
+   duration_type_id: int
+   repeats_every: int
+   duration: int
+   is_active: tinyint(1)
+   status_changed_on: timestamp
+   is_approved: tinyint(1)
+   approved_by: int
+   approved_on: timestamp
+   remarks: varchar(500)
+   format_file: longtext
+   format_file_size: float
+   created_by: int
+   created_on: timestamp
+   updated_by: int
+   updated_on: timestamp
+   is_updated: tinyint(1)
+   data_mode: tinyint(1)
+   task_code: varchar(20)
+   change_mode: int
+   task_id: varchar(25)
+   task_type: varchar(150)
+   statutory_nature_id: int
+   statutory_id: int
+   compf_law_ref: varchar(500)
+   criticality_id: int
+   enable_trigger: int
+   statutory_effective_date: date
+   is_governed: tinyint(1)
+   show_validity_date: tinyint(1)
+   is_doc_mandatory: tinyint(1)
+   compliance_id: int
+}
+class tbl_compliances_22092023 {
+   compliance_id: int
+   effective_date: date
+   statutory_mapping: text
+   country_id: int
+   domain_id: int
+   task_group_id: int
+   task_sub_group_id: int
+   statutory_provision: varchar(500)
+   compliance_task: varchar(200)
+   document_name: varchar(100)
+   compliance_description: longtext
+   penal_consequences: longtext
+   reference_link: varchar(500)
+   frequency_id: int
+   statutory_dates: longtext
+   repeats_type_id: int
+   duration_type_id: int
+   repeats_every: int
+   duration: int
+   is_active: tinyint(1)
+   status_changed_on: timestamp
+   is_approved: tinyint(1)
+   approved_by: int
+   approved_on: timestamp
+   remarks: varchar(500)
+   format_file: longtext
+   format_file_size: float
+   created_by: int
+   created_on: timestamp
+   updated_by: int
+   updated_on: timestamp
+   is_updated: tinyint(1)
+   data_mode: tinyint(1)
+   task_code: varchar(20)
+   change_mode: int
+   task_id: varchar(25)
+   task_type: varchar(150)
+   statutory_nature_id: int
+   statutory_id: int
+   compf_law_ref: varchar(500)
+   criticality_id: int
+   enable_trigger: int
+   statutory_effective_date: date
+   is_governed: tinyint(1)
+}
+class tbl_countries {
+   country_name: varchar(50)
+   is_active: tinyint
+   is_multiple_tz: tinyint(1)
+   is_postal_check_on: tinyint(1)
+   country_code: varchar(5)
+   created_by: int
+   created_on: timestamp
+   updated_by: int
+   updated_on: timestamp
+   enable_trigger: int
+   country_id: int
+}
+class tbl_crud_cycle_data {
+   country_id: int
+   domain_id: int
+   statutory_id: int
+   compliance_id: int
+   frequency_id: int
+   user_id: int
+   country_name: varchar(255)
+   domain_name: varchar(255)
+   statutory_name: varchar(255)
+   compliance_task: varchar(255)
+   frequency_: varchar(255)
+}
+class tbl_crud_data {
+   country_name: varchar(255)
+   domain_name: varchar(255)
+   statutory_name: varchar(255)
+   compliance_task: varchar(255)
+   frequency_: varchar(255)
+   created_by: int
+   created_on: date
+   compliance_id: int
+}
+class tbl_database_server {
+   database_server_name: varchar(50)
+   database_ip: varchar(20)
+   database_port: int
+   database_username: varchar(50)
+   database_password: varchar(50)
+   legal_entity_ids: longtext
+   created_by: int
+   created_on: timestamp
+   updated_by: int
+   updated_on: timestamp
+   database_server_id: int
+}
+class tbl_datato_client {
+   le_id: int
+   tbl_name: varchar(50)
+   key_ids: varchar(3000)
+   is_insert: tinyint(1)
+   client_status: tinyint(1)
+   created_by: int
+   created_on: timestamp
+   updated_by: int
+   updated_on: timestamp
+   remarks: varchar(3000)
+   is_group: tinyint(1)
+   enable_trigger: int
+   id: int
+}
+class tbl_deleted_units {
+   unit_id: int
+   client_id: int
+   business_group_id: int
+   legal_entity_id: int
+   division_id: int
+   category_id: int
+   country_id: int
+   domain_ids: longtext
+   organisation_ids: longtext
+   geography_id: int
+   unit_code: varchar(50)
+   unit_name: varchar(100)
+   address: varchar(250)
+   postal_code: varchar(10)
+   is_closed: tinyint
+   closed_on: timestamp
+   closed_by: int
+   closed_remarks: varchar(500)
+   is_cmpf: tinyint
+   is_ltgs: tinyint
+   is_vndr: tinyint
+   is_approved: tinyint(1)
+   approved_by: int
+   approved_on: timestamp
+   remarks: varchar(500)
+   created_by: int
+   created_on: timestamp
+   updated_by: int
+   updated_on: timestamp
+   data_mode: tinyint(1)
+   tz_id: int
+   UnitCode1: varchar(50)
+   UnitCode2: varchar(50)
+   UnitCode3: varchar(50)
+   UnitCode4: varchar(50)
+   UnitCode5: varchar(50)
+   UnitCode6: varchar(50)
+   UnitCode7: varchar(50)
+   UnitCode8: varchar(50)
+   UnitCode9: varchar(50)
+   UnitCode10: varchar(50)
+   enable_trigger: int
+   deleted_by: int
+   deleted_on: timestamp
+   deleted_id: int
+}
+class tbl_divisions {
+   client_id: int
+   division_name: varchar(100)
+   legal_entity_id: int
+   business_group_id: int
+   created_by: int
+   created_on: timestamp
+   updated_by: int
+   updated_on: timestamp
+   enable_trigger: int
+   division_id: int
+}
+class tbl_domain_countries {
+   country_id: int
+   domain_id: int
+   domain_code: varchar(5)
+   is_active: tinyint
+   enable_trigger: int
+   id: int
+}
+class tbl_domains {
+   domain_name: varchar(50)
+   is_cmpf: int
+   is_ltgs: int
+   is_vndr: int
+   is_active: tinyint
+   created_by: int
+   created_on: timestamp
+   updated_by: int
+   updated_on: timestamp
+   enable_trigger: int
+   domain_id: int
+}
+class tbl_elibrary_artifact_masters {
+   name: varchar(50)
+   id: int
+}
+class tbl_email_verification {
+   user_id: int
+   verification_code: varchar(50)
+   verification_type_id: int
+   expiry_date: timestamp
+}
+class tbl_employee_mapping {
+   client_id: int
+   le_id: int
+   prod_id: int
+   div_ids: text
+   cat_ids: text
+   unit_ids: text
+   level_id: int
+   employee_id: int
+   is_active: tinyint
+   created_by: int
+   created_on: timestamp
+   updated_by: int
+   updated_on: timestamp
+   hierarchy_key: longtext
+   mapping_id: int
+}
+class tbl_employee_master {
+   employee_name: varchar(50)
+   employee_code: varchar(50)
+   email_id: varchar(256)
+   is_cmpf: tinyint(1)
+   is_ltgs: tinyint(1)
+   is_vndr: tinyint(1)
+   level_id: int
+   mobile_no: varchar(50)
+   is_active: tinyint
+   created_by: int
+   created_on: timestamp
+   updated_by: int
+   updated_on: timestamp
+   employee_id: int
+}
+class tbl_event_comp_mapping {
+   event_id: int
+   compliance_id: int
+   mode: int
+   is_demap: int
+   effective_date: date
+   amd_status: int
+   event_info: longtext
+   task_accountable: tinyint(1)
+   rejected_remarks: varchar(500)
+   created_by: int
+   created_on: datetime
+   updated_by: int
+   updated_on: datetime
+   approved_by: int
+   approved_on: datetime
+   enable_trigger: int
+   id: int
+}
+class tbl_event_comp_mapping_stg {
+   event_id: int
+   compliance_id: int
+   mode: int
+   is_demap: int
+   effective_date: date
+   amd_status: int
+   event_info: longtext
+   task_accountable: tinyint(1)
+   rejected_remarks: varchar(500)
+   created_by: int
+   created_on: datetime
+   updated_by: int
+   updated_on: datetime
+   approved_by: int
+   approved_on: datetime
+   enable_trigger: int
+   stg_id: int
+}
+class tbl_event_comp_pr_ch_mapping {
+   event_id: int
+   pr_ch_info: longtext
+   mode: int
+   id: int
+}
+class tbl_event_comp_pr_ch_mapping_stg {
+   event_id: int
+   pr_ch_info: longtext
+   mode: int
+   stg_id: int
+}
+class tbl_event_label_type {
+   event_label_id: int
+   event_label_name: varchar(20)
+}
+class tbl_event_master {
+   country_id: int
+   event_name: varchar(100)
+   is_active: tinyint
+   created_by: int
+   created_date: timestamp
+   updated_by: int
+   updated_date: timestamp
+   enable_trigger: int
+   event_id: int
+}
+class tbl_file_server {
+   file_server_name: varchar(50)
+   ip: varchar(20)
+   port: int
+   legal_entity_ids: longtext
+   created_by: int
+   created_on: timestamp
+   updated_by: int
+   updated_on: timestamp
+   file_server_id: int
+}
+class tbl_form_category {
+   category_id_1: tinyint
+   category_id_2: tinyint
+   category_id_3: tinyint
+   category_id_4: tinyint
+   category_id_5: tinyint
+   category_id_6: tinyint
+   category_id_7: tinyint
+   category_id_8: tinyint
+   form_id: int
+}
+class tbl_form_type {
+   form_type: varchar(20)
+   form_type_id: int
+}
+class tbl_forms {
+   form_type_id: int
+   form_name: varchar(50)
+   form_url: varchar(50)
+   form_order: int
+   parent_menu: varchar(50)
+   is_active: tinyint
+   form_id: int
+}
+class tbl_geographies {
+   geography_name: varchar(50)
+   level_id: int
+   parent_ids: text
+   parent_names: text
+   is_active: tinyint
+   created_by: int
+   created_on: timestamp
+   updated_by: int
+   updated_on: timestamp
+   enable_trigger: int
+   geography_id: int
+}
+class tbl_geography_levels {
+   country_id: int
+   level_position: int
+   level_name: varchar(50)
+   is_active: tinyint
+   created_by: int
+   created_on: timestamp
+   updated_by: int
+   updated_on: timestamp
+   level_id: int
+}
+class tbl_group_admin_email_notification {
+   client_id: int
+   legal_entity_id: int
+   group_admin_email_id: varchar(256)
+   registration_sent_by: int
+   registration_sent_on: timestamp
+   unit_creation_informed: tinyint(1)
+   unit_sent_by: int
+   unit_sent_on: timestamp
+   assign_statutory_informed: tinyint(1)
+   statu_sent_by: int
+   statu_sent_on: timestamp
+   is_litigations: tinyint
+   litigation_informed: tinyint
+   litigation_unit_sent_by: int
+   litigation_unit_sent_on: timestamp
+   registration_resend_on: timestamp
+   registration_resend_by: int
+   is_vendor: tinyint
+   vendor_informed: tinyint
+   vendor_unit_sent_by: int
+   vendor_unit_sent_on: timestamp
+   client_informed_id: int
+}
+class tbl_hierarchy_levels {
+   level_position: int
+   level_name: varchar(50)
+   created_by: int
+   created_on: timestamp
+   updated_by: int
+   updated_on: timestamp
+   level_id: int
+}
+class tbl_ip_settings {
+   client_id: int
+   form_id: int
+   ips: text
+   updated_by: int
+   updated_on: timestamp
+   created_by: int
+   created_on: timestamp
+   ip_settings_id: int
+}
+class tbl_le_contract_history {
+   le_id: int
+   client_id: int
+   business_group_id: int
+   le_name: varchar(100)
+   contract_from: date
+   contract_to: date
+   logo: varchar(200)
+   file_space_limit: float
+   total_licence: int
+   modified_by: int
+   approved_on: timestamp
+   approval_status: int
+   prod_id: int
+   cont_hist_id: int
+}
+class tbl_le_dmn_removal_history {
+   le_domain_id: int
+   client_id: int
+   legal_entity_id: int
+   domain_id: int
+   activation_date: timestamp
+   organisation_id: int
+   count: int
+   prod_id: int
+   remarks: varchar(500)
+   created_by: int
+   created_on: timestamp
+   approval_status: int
+   enable_trigger: int
+   hst_id: int
+}
+class tbl_le_product_details {
+   prod_id: int
+   is_allocated: int
+   legal_entity_id: int
+   created_on: datetime
+   allocated_on: datetime
+   enable_trigger: int
+   id: int
+}
+class tbl_le_product_master {
+   prod_name: varchar(50)
+   prod_id: int
+}
+class tbl_legal_entities {
+   country_id: int
+   client_id: int
+   business_group_id: int
+   legal_entity_name: varchar(100)
+   contract_from: date
+   contract_to: date
+   logo: varchar(200)
+   file_space_limit: float
+   used_file_space: float
+   total_licence: int
+   used_licence: int
+   is_closed: tinyint
+   is_approved: tinyint
+   is_created: tinyint
+   reason: text
+   approved_by: int
+   approved_on: timestamp
+   closed_on: timestamp
+   closed_by: int
+   closed_remarks: varchar(500)
+   created_by: int
+   created_on: timestamp
+   updated_by: int
+   updated_on: timestamp
+   logo_size: float
+   data_mode: tinyint(1)
+   client_type: int
+   enable_trigger: int
+   reco_le_id: int
+   legal_entity_id: int
+}
+class tbl_legal_entity_contract_history {
+   legal_entity_id: int
+   client_id: int
+   business_group_id: int
+   business_group_name: varchar(100)
+   legal_entity_name: varchar(100)
+   contract_from: date
+   contract_to: date
+   logo: varchar(200)
+   file_space_limit: float
+   total_licence: int
+   created_on: timestamp
+   client_type: int
+   legal_entity_history_id: int
+}
+class tbl_legal_entity_domains {
+   legal_entity_id: int
+   domain_id: int
+   activation_date: timestamp
+   organisation_id: int
+   count: int
+   created_by: int
+   created_on: timestamp
+   enable_trigger: int
+   le_domain_id: int
+}
+class tbl_legal_entity_domains_history {
+   le_domain_id: int
+   legal_entity_id: int
+   domain_id: int
+   activation_date: timestamp
+   organisation_id: int
+   count: int
+   created_by: int
+   le_domain_history_id: int
+}
+class tbl_mail_category_master {
+   category_name: varchar(50)
+   category_type_id: int
+}
+class tbl_mapped_industries {
+   compliance_id: int
+   organisation_id: int
+   assigned_by: int
+   assigned_on: timestamp
+   id: int
+}
+class tbl_mapped_locations {
+   compliance_id: int
+   geography_id: int
+   assigned_by: int
+   assigned_on: timestamp
+   id: int
+}
+class tbl_mapped_locations_22092023 {
+   id: int
+   compliance_id: int
+   geography_id: int
+   assigned_by: int
+   assigned_on: timestamp
+}
+class tbl_message_users {
+   message_id: int
+   user_id: int
+   read_status: tinyint(1)
+}
+class tbl_messages {
+   user_category_id: int
+   message_heading: text
+   message_text: text
+   link: text
+   created_by: int
+   created_on: timestamp
+   message_id: int
+}
+class tbl_mig_compliance_input_data_ap {
+   o_primary_statutory: varchar(100)
+   o_secondary_statutory: varchar(100)
+   n_primary_statutory: varchar(100)
+   n_secondary_statutory: varchar(100)
+   o_statutory_id: int
+   n_statutory_id: int
+   compliance_id: int
+   is_processed: int
+   id: int
+   task_code: varchar(50)
+}
+class tbl_mig_compliance_master_ap {
+   compliance_id: int
+   effective_date: date
+   country_id: int
+   domain_id: int
+   task_group_id: int
+   task_sub_group_id: int
+   statutory_provision: varchar(500)
+   compliance_task: varchar(200)
+   document_name: varchar(100)
+   compliance_description: longtext
+   penal_consequences: longtext
+   reference_link: varchar(500)
+   frequency_id: int
+   statutory_dates: longtext
+   repeats_type_id: int
+   duration_type_id: int
+   repeats_every: int
+   duration: int
+   is_active: tinyint(1)
+   status_changed_on: timestamp
+   is_approved: tinyint(1)
+   approved_by: int
+   approved_on: timestamp
+   remarks: varchar(500)
+   format_file: longtext
+   format_file_size: float
+   created_by: int
+   created_on: timestamp
+   updated_by: int
+   updated_on: timestamp
+   is_updated: tinyint(1)
+   data_mode: tinyint(1)
+   task_code: varchar(20)
+   statutory_mapping: text
+   statutory_nature_id: int
+   statutory_id: int
+   compf_law_ref: varchar(500)
+   change_mode: int
+   task_id: varchar(25)
+   task_type: varchar(150)
+   criticality_id: int
+   enable_trigger: int
+   statutory_effective_date: date
+   is_governed: tinyint(1)
+}
+class tbl_mig_mapping_compliance_update_history {
+   task_code: varchar(50)
+   compliance_id: int
+   history_id: int
+   task_mapping_id: int
+   order_number: int
+   old_history_id: int
+}
+class tbl_mig_mapping_extension_history {
+   task_code: varchar(50)
+   compliance_id: int
+   history_id: int
+   task_mapping_id: int
+   order_number: int
+   old_history_id: int
+}
+class tbl_mig_statutories_master_ap {
+   statutory_id: int
+   level_id: int
+   effective_date: date
+   statutory_name: varchar(200)
+   parent_ids: text
+   parent_names: text
+   statutory_mapping_ids: varchar(50)
+   act_code: varchar(5)
+   created_by: int
+   created_on: timestamp
+   updated_by: int
+   updated_on: timestamp
+   enable_trigger: int
+}
+class tbl_mig_statutory_notification_mapping {
+   task_code: varchar(50)
+   compliance_id: int
+   notification_id: int
+   task_mapping_id: int
+   order_number: int
+   old_notification_id: int
+}
+class tbl_mig_unit_master {
+   client_id: int
+   group_name: varchar(50)
+   le_id: int
+   le_name: varchar(100)
+   le_is_closed: int
+   unit_id: int
+   unit_code: varchar(50)
+   unit_name: varchar(100)
+   unit_location: varchar(50)
+   geography_id: int
+   unit_is_closed: int
+   is_cmpf: int
+   is_vndr: int
+   is_ltgs: int
+   is_processed: int
+   id: int
+}
+class tbl_mobile_registration {
+   device_type_id: int
+   user_id: int
+   registration_key: varchar(50)
+}
+class tbl_notify_techteam {
+   emp_name: varchar(100)
+   emp_code: varchar(45)
+   emp_mail: varchar(100)
+   is_active: tinyint
+   emp_Id: int
+}
+class tbl_organisation {
+   country_id: int
+   domain_id: int
+   organisation_name: varchar(50)
+   is_active: tinyint
+   created_by: int
+   created_on: timestamp
+   updated_by: int
+   updated_on: timestamp
+   enable_trigger: int
+   organisation_id: int
+}
+class tbl_postalcode_master {
+   postal_code: varchar(10)
+   postal_area_code: varchar(5)
+   postal_location: varchar(1500)
+   country_id: int
+   tz_id: int
+   is_active: tinyint(1)
+   created_on: timestamp
+   postal_id: int
+}
+class tbl_scheduler_client_log {
+   log_id: int
+   le_id: int
+   product_id: int
+   start_time: datetime
+   end_time: datetime
+   trans_id: int
+}
+class tbl_scheduler_log {
+   machine_id: int
+   product_id: int
+   ip: varchar(15)
+   process_id: int
+   tz_id: int
+   process_dt: date
+   start_time: datetime
+   end_time: datetime
+   log_id: int
+}
+class tbl_session_types {
+   session_type: varchar(20)
+   session_type_id: int
+}
+class tbl_sso_conf {
+   client_saml_id: int
+   client_id: int
+   sso_provider_name: varchar(200)
+   sso_provider_url: varchar(200)
+   saml_configuration_file: varchar(500)
+   is_active: tinyint(1)
+   is_verified: tinyint(1)
+   is_approved: tinyint(1)
+   remarks: varchar(200)
+   created_by: int
+   created_on: timestamp
+   updated_by: int
+   updated_on: timestamp
+   enable_trigger: int
+   saml_id: int
+}
+class tbl_statutories {
+   effective_date: date
+   level_id: int
+   statutory_name: varchar(200)
+   parent_ids: text
+   parent_names: text
+   statutory_mapping_ids: varchar(50)
+   act_code: varchar(5)
+   created_by: int
+   created_on: timestamp
+   updated_by: int
+   updated_on: timestamp
+   enable_trigger: int
+   statutory_id: int
+}
+class tbl_statutory_amendment_history {
+   statutory_id: int
+   statutory_name: varchar(200)
+   effective_date: date
+   parent_ids: text
+   statutory_mappings: text
+   mode: text
+   created_by: int
+   created_on: timestamp
+   updated_by: int
+   updated_on: timestamp
+   enable_trigger: int
+   history_id: int
+}
+class tbl_statutory_levels {
+   country_id: int
+   domain_id: int
+   level_position: int
+   level_name: varchar(50)
+   is_active: tinyint
+   created_by: int
+   created_on: timestamp
+   updated_by: int
+   updated_on: timestamp
+   level_id: int
+}
+class tbl_statutory_natures {
+   statutory_nature_name: varchar(50)
+   is_active: tinyint
+   created_by: int
+   created_on: timestamp
+   updated_by: int
+   updated_on: timestamp
+   statutory_nature_id: int
+   country_id: int
+}
+class tbl_statutory_notifications {
+   notification_text: longtext
+   compliance_id: int
+   created_by: int
+   created_on: timestamp
+   extn_id: int
+   enable_trigger: int
+   notification_id: int
+}
+class tbl_statutory_notifications_users {
+   notification_id: int
+   user_id: int
+   read_status: tinyint(1)
+}
+class tbl_task_category_mapping_stg {
+   tsk_grp_id: int
+   tsk_sub_grp_id: int
+   compliance_id: int
+   mode: int
+   is_demap: int
+   created_by: int
+   created_date: datetime
+   approved_by: int
+   approved_on: datetime
+   rejected_remarks: varchar(500)
+   id: int
+}
+class tbl_task_doc_details {
+   rec_no: int
+   GroupName: varchar(500)
+   Country: varchar(500)
+   LegalEntityName: varchar(500)
+   Domain: varchar(500)
+   UnitName: varchar(500)
+   unitcode: varchar(500)
+   division: varchar(500)
+   category: varchar(500)
+   Year: varchar(500)
+   Month: varchar(500)
+   FileType: varchar(500)
+   FileName: varchar(500)
+   PrimaryLegislation: varchar(500)
+   SecondaryLegislation: varchar(500)
+   ComplianceTask: varchar(200)
+   TaskCode: varchar(500)
+   Frequency: varchar(500)
+   Periodicity: varchar(500)
+   is_processed: int
+   CompletionDate: varchar(500)
+   remarks: varchar(500)
+   user_session: varchar(100)
+   csv_name: varchar(100)
+   user_id: int
+   master_task_code: varchar(45)
+   relative_path: varchar(500)
+   created_date: datetime
+   File_ref_id: varchar(100)
+   compfie_status: varchar(100)
+   compfie_remarks: varchar(500)
+   document_reference_number: varchar(50)
+   is_not_applicable: tinyint(1)
+   auto_approved: tinyint(1)
+   validity_date: varchar(500)
+   next_due_date: varchar(500)
+   task_category: varchar(500)
+   task_sub_category: varchar(500)
+   row_id: int
+}
+class tbl_task_doc_mapping {
+   com_value: varchar(500)
+   stat_value: varchar(500)
+   sbu: varchar(500)
+   category: varchar(500)
+   rec_id: int
+}
+class tbl_task_doc_stg {
+   rec_no: int
+   client_id: int
+   country_id: int
+   legal_entity_id: int
+   domain_id: int
+   unit_id: int
+   db_name: varchar(45)
+   db_uname: varchar(45)
+   db_pwd: varchar(45)
+   db_hname: varchar(45)
+   gdb_user: varchar(500)
+   gdb_pwd: varchar(500)
+   gdb_name: varchar(500)
+   file_ip: varchar(500)
+   file_port: varchar(50)
+   ch_id: int
+   doc_name: longtext
+   compliance_id: int
+   completed_by: varchar(500)
+   start_date: varchar(500)
+   due_date: varchar(500)
+   is_processed: int
+   completion_date: varchar(500)
+   remarks: varchar(500)
+   tz_name: varchar(100)
+   user_session: varchar(100)
+   document_size: int
+   document_reference_number: varchar(50)
+   created_date: datetime
+   db_port: varchar(50)
+   validity_date: varchar(500)
+   next_due_date: varchar(500)
+   row_id: int
+}
+class tbl_task_doc_user_details {
+   username: varchar(20)
+   password: varchar(50)
+   employee_name: varchar(50)
+   employee_code: varchar(50)
+   email_id: varchar(100)
+   is_active: tinyint
+   created_by: int
+   created_on: timestamp
+   updated_by: int
+   updated_on: timestamp
+   is_cbu_user: tinyint
+   cbu_access_info: longtext
+   is_rbu_user: tinyint
+   rbu_access_info: longtext
+   user_id: int
+}
+class tbl_task_doc_user_sessions {
+   user_id: int
+   last_accessed_time: timestamp
+   user_key: varchar(50)
+   session_token: varchar(50)
+}
+class tbl_task_group_master {
+   tsk_grp_name: varchar(50)
+   is_active: tinyint(1)
+   created_by: int
+   created_on: timestamp
+   updated_by: int
+   updated_on: timestamp
+   enable_trigger: int
+   display_order: int
+   tsk_grp_id: int
+}
+class tbl_task_remarks_details {
+   client_id: int
+   legal_entity_id: int
+   client_group: varchar(50)
+   legal_entity_name: varchar(100)
+   upload_file_name: varchar(100)
+   download_file_name: text
+   user_session: varchar(100)
+   total_records: int
+   processed_records: int
+   process_status: tinyint
+   final_status: tinyint
+   system_remarks: varchar(200)
+   submitted_by: int
+   submitted_on: datetime
+   status_changed_on: datetime
+   prod_id: tinyint
+   is_active: int
+   retry_count: int
+   row_id: int
+}
+class tbl_task_statutory_settings_status {
+   client_id: int
+   legal_entity_id: int
+   file_name: varchar(100)
+   user_id: int
+   status: varchar(20)
+   download_status: tinyint
+   product: tinyint
+   created_on: timestamp
+   updated_on: timestamp
+   ss_id: int
+}
+class tbl_task_sub_group {
+   tsk_sub_grp_name: varchar(50)
+   tsk_grp_id: int
+   is_active: tinyint(1)
+   created_by: int
+   created_on: timestamp
+   updated_by: int
+   updated_on: timestamp
+   enable_trigger: int
+   display_order: int
+   tsk_sub_grp_id: int
+}
+class tbl_timezones {
+   tz_name: varchar(50)
+   country_id: int
+   country_code: varchar(5)
+   country_name: varchar(50)
+   continent: varchar(50)
+   gmt_hours: varchar(10)
+   dst_status: tinyint(1)
+   is_active: tinyint(1)
+   created_on: timestamp
+   tz_id: int
+}
+class tbl_unitcode_label {
+   client_id: int
+   legal_entity_id: int
+   code_position: int
+   label_description: varchar(500)
+   display_order: int
+   created_by: int
+   created_on: timestamp
+   updated_by: int
+   updated_on: timestamp
+   is_active: int
+   enable_trigger: int
+   label_id: int
+}
+class tbl_units {
+   client_id: int
+   business_group_id: int
+   legal_entity_id: int
+   division_id: int
+   category_id: int
+   country_id: int
+   domain_ids: longtext
+   organisation_ids: longtext
+   geography_id: int
+   unit_code: varchar(50)
+   unit_name: varchar(100)
+   address: varchar(250)
+   postal_code: varchar(10)
+   is_closed: tinyint
+   closed_on: timestamp
+   closed_by: int
+   closed_remarks: varchar(500)
+   is_cmpf: tinyint
+   is_ltgs: tinyint
+   is_vndr: tinyint
+   is_approved: tinyint(1)
+   approved_by: int
+   approved_on: timestamp
+   remarks: varchar(500)
+   created_by: int
+   created_on: timestamp
+   updated_by: int
+   updated_on: timestamp
+   data_mode: tinyint(1)
+   tz_id: int
+   UnitCode1: varchar(50)
+   UnitCode2: varchar(50)
+   UnitCode3: varchar(50)
+   UnitCode4: varchar(50)
+   UnitCode5: varchar(50)
+   UnitCode6: varchar(50)
+   UnitCode7: varchar(50)
+   UnitCode8: varchar(50)
+   UnitCode9: varchar(50)
+   UnitCode10: varchar(50)
+   enable_trigger: int
+   reco_unit_id: int
+   unit_id: int
+}
+class tbl_units_info {
+   emp_level_one: varchar(100)
+   emp_level_two: varchar(100)
+   emp_level_three: varchar(100)
+   emp_level_four: varchar(100)
+   emp_level_five: varchar(100)
+   emp_level_six: varchar(100)
+   emp_level_seven: varchar(100)
+   emp_level_eight: varchar(100)
+   emp_level_nine: varchar(100)
+   emp_level_ten: varchar(100)
+   unit_id: int
+}
+class tbl_units_organizations {
+   unit_id: int
+   domain_id: int
+   organisation_id: int
+   is_delete: tinyint(1)
+   is_new: int
+   is_new_mapping: tinyint(1)
+   unit_org_id: int
+}
+class tbl_units_stg {
+   unit_id: int
+   client_id: int
+   business_group_id: int
+   legal_entity_id: int
+   unit_code: varchar(50)
+   unit_name: varchar(100)
+   address: varchar(250)
+   postal_code: varchar(10)
+   is_approved: tinyint(1)
+   approved_by: int
+   approved_on: timestamp
+   remarks: varchar(500)
+   updated_by: int
+   updated_on: timestamp
+   UnitCode1: varchar(50)
+   UnitCode2: varchar(50)
+   UnitCode3: varchar(50)
+   UnitCode4: varchar(50)
+   UnitCode5: varchar(50)
+   UnitCode6: varchar(50)
+   UnitCode7: varchar(50)
+   UnitCode8: varchar(50)
+   UnitCode9: varchar(50)
+   UnitCode10: varchar(50)
+   division_id: int
+   category_id: int
+   is_cmpf: tinyint
+   is_ltgs: tinyint
+   is_vndr: tinyint
+   unit_stg_id: int
+}
+class tbl_user_account_reassign_history {
+   user_category_id: int
+   reassigned_from: int
+   reassigned_to: int
+   reassigned_data: int
+   domain_id: int
+   remarks: varchar(500)
+   assigned_by: int
+   assigned_on: timestamp
+   user_account_id: int
+}
+class tbl_user_category {
+   user_category_name: varchar(50)
+   user_category_id: int
+}
+class tbl_user_clients {
+   user_id: int
+   user_category_id: int
+   client_id: int
+   assigned_by: int
+   assigned_on: timestamp
+}
+class tbl_user_countries {
+   assigned_by: int
+   assigned_on: timestamp
+   user_id: int
+   country_id: int
+}
+class tbl_user_domains {
+   user_id: int
+   domain_id: int
+   country_id: int
+   assigned_by: int
+   assigned_on: timestamp
+}
+class tbl_user_forgot_link_history {
+   ip: varchar(15)
+   fp_link_dt: date
+   fp_link_attempt: int
+   user_id: int
+}
+class tbl_user_group_forms {
+   user_group_id: int
+   form_id: int
+   export_access: tinyint
+}
+class tbl_user_groups {
+   user_category_id: int
+   user_group_name: varchar(50)
+   is_active: tinyint
+   created_by: int
+   created_on: timestamp
+   updated_by: int
+   updated_on: timestamp
+   user_group_id: int
+}
+class tbl_user_legalentity {
+   user_id: int
+   client_id: int
+   legal_entity_id: int
+   assigned_by: int
+   assigned_on: timestamp
+}
+class tbl_user_login_details {
+   user_category_id: int
+   email_id: varchar(256)
+   username: varchar(20)
+   password: varchar(50)
+   is_active: tinyint
+   created_by: int
+   created_on: timestamp
+   updated_by: int
+   updated_on: timestamp
+   user_id: int
+}
+class tbl_user_login_history {
+   ip: varchar(20)
+   login_time: datetime
+   login_attempt: int
+   user_id: int
+}
+class tbl_user_login_trace {
+   user_id: int
+   ip: varchar(20)
+   login_time: datetime
+   logout_time: datetime
+   id: int
+}
+class tbl_user_mapping {
+   user_category_id: int
+   country_id: int
+   domain_id: int
+   parent_user_id: int
+   child_user_id: int
+   created_by: int
+   created_on: timestamp
+   updated_by: int
+   updated_on: timestamp
+   user_mapping_id: int
+}
+class tbl_user_password_history {
+   user_id: int
+   password: varchar(50)
+   created_on: timestamp
+   ip: varchar(15)
+   ph_id: int
+}
+class tbl_user_replacement_history {
+   user_category_id: int
+   replaced_from: int
+   replaced_by: int
+   remarks: varchar(500)
+   created_by: int
+   created_on: timestamp
+   user_replace_id: int
+}
+class tbl_user_sessions {
+   user_id: int
+   session_type_id: int
+   last_accessed_time: timestamp
+   session_token: varchar(50)
+}
+class tbl_user_units {
+   user_id: int
+   user_category_id: int
+   client_id: int
+   legal_entity_id: int
+   unit_id: int
+   domain_id: int
+   assigned_by: int
+   assigned_on: timestamp
+   is_delete: tinyint(1)
+}
+class tbl_users {
+   user_category_id: int
+   employee_name: varchar(50)
+   employee_code: varchar(50)
+   email_id: varchar(256)
+   contact_no: varchar(50)
+   mobile_no: varchar(50)
+   user_group_id: int
+   address: varchar(250)
+   designation: varchar(50)
+   is_active: tinyint
+   status_changed_on: timestamp
+   is_disable: tinyint
+   disabled_on: timestamp
+   disable_reason: text
+   created_by: int
+   created_on: timestamp
+   updated_by: int
+   updated_on: timestamp
+   user_id: int
+}
+class tbl_validity_date_settings {
+   country_id: int
+   domain_id: int
+   days: int
+   created_by: int
+   created_on: timestamp
+   updated_by: int
+   updated_on: timestamp
+   enable_trigger: int
+   validity_date_id: int
+}
+class tbl_verification_type {
+   verification_type: varchar(50)
+   verification_type_id: int
+}
+class tbl_vertical_zone {
+   vertical_zone_name: varchar(50)
+   vertical_zone_type_id: int
+   is_active: tinyint
+   created_by: int
+   created_on: timestamp
+   updated_by: int
+   updated_on: timestamp
+   enable_trigger: int
+   vertical_zone_id: int
+}
+class tbl_vertical_zone_countries {
+   country_id: int
+   vertical_zone_id: int
+   is_active: tinyint
+   created_by: int
+   created_on: timestamp
+   updated_by: int
+   updated_on: timestamp
+   enable_trigger: int
+   id: int
+}
+class tbl_vndr_client_compliances {
+   client_statutory_id: int
+   client_id: int
+   legal_entity_id: int
+   unit_id: int
+   domain_id: int
+   statutory_id: int
+   statutory_applicable_status: tinyint
+   statutory_opted_status: tinyint
+   remarks: varchar(500)
+   compliance_applicable_status: tinyint
+   compliance_opted_status: tinyint
+   not_opted_remarks: longtext
+   is_saved: tinyint
+   saved_by: int
+   saved_on: timestamp
+   is_approved: tinyint
+   approved_by: int
+   approved_on: timestamp
+   is_submitted: tinyint
+   submitted_by: int
+   submitted_on: timestamp
+   updated_by: int
+   updated_on: timestamp
+   client_opted_by: int
+   client_opted_on: timestamp
+   enable_trigger: int
+   client_compliance_id: int
+   compliance_id: int
+}
+class tbl_vndr_client_compliances_dns {
+   client_statutory_id: int
+   client_id: int
+   legal_entity_id: int
+   unit_id: int
+   domain_id: int
+   statutory_id: int
+   statutory_applicable_status: tinyint
+   statutory_opted_status: tinyint
+   remarks: varchar(500)
+   compliance_applicable_status: tinyint
+   compliance_opted_status: tinyint
+   not_opted_remarks: longtext
+   is_saved: tinyint
+   saved_by: int
+   saved_on: timestamp
+   is_approved: tinyint
+   approved_by: int
+   approved_on: timestamp
+   is_submitted: tinyint
+   submitted_by: int
+   submitted_on: timestamp
+   updated_by: int
+   updated_on: timestamp
+   client_compliance_id_dns: int
+   compliance_id: int
+}
+class tbl_vndr_client_statutories {
+   client_id: int
+   unit_id: int
+   domain_id: int
+   status: tinyint
+   reason: varchar(500)
+   approved_by: int
+   approved_on: timestamp
+   enable_trigger: int
+   client_statutory_id: int
+}
+class tbl_vndr_task_doc_details {
+   rec_no: int
+   GroupName: varchar(500)
+   Country: varchar(500)
+   LegalEntityName: varchar(500)
+   Domain: varchar(500)
+   VendorName: varchar(500)
+   vendorcode: varchar(500)
+   division: varchar(500)
+   category: varchar(500)
+   Year: varchar(500)
+   Month: varchar(500)
+   FileType: varchar(500)
+   FileName: varchar(500)
+   PrimaryLegislation: varchar(500)
+   SecondaryLegislation: varchar(500)
+   ComplianceTask: varchar(200)
+   TaskCode: varchar(500)
+   Frequency: varchar(500)
+   Periodicity: varchar(500)
+   is_processed: int
+   CompletionDate: varchar(500)
+   remarks: varchar(500)
+   user_session: varchar(100)
+   csv_name: varchar(100)
+   user_id: int
+   master_task_code: varchar(45)
+   relative_path: varchar(500)
+   created_date: datetime
+   File_ref_id: varchar(100)
+   compfie_status: varchar(100)
+   compfie_remarks: varchar(500)
+   document_reference_number: varchar(50)
+   is_not_applicable: tinyint(1)
+   auto_approved: tinyint(1)
+   row_id: int
+}
+class tbl_vndr_task_doc_stg {
+   rec_no: int
+   client_id: int
+   country_id: int
+   legal_entity_id: int
+   domain_id: int
+   unit_id: int
+   db_name: varchar(45)
+   db_uname: varchar(45)
+   db_pwd: varchar(45)
+   db_hname: varchar(45)
+   gdb_user: varchar(500)
+   gdb_pwd: varchar(500)
+   gdb_name: varchar(500)
+   file_ip: varchar(500)
+   file_port: varchar(50)
+   ch_id: int
+   doc_name: longtext
+   compliance_id: int
+   completed_by: varchar(500)
+   start_date: varchar(500)
+   due_date: varchar(500)
+   is_processed: int
+   completion_date: varchar(500)
+   remarks: varchar(500)
+   tz_name: varchar(100)
+   user_session: varchar(100)
+   document_size: int
+   document_reference_number: varchar(50)
+   created_date: datetime
+   db_port: varchar(50)
+   row_id: int
+}
+
+auth_group_permissions                     -[#595959,plain]-^  auth_group                                : "group_id:id"
+auth_group_permissions                     -[#595959,plain]-^  auth_permission                           : "permission_id:id"
+auth_permission                            -[#595959,plain]-^  django_content_type                       : "content_type_id:id"
+auth_user_groups                           -[#595959,plain]-^  auth_group                                : "group_id:id"
+auth_user_groups                           -[#595959,plain]-^  auth_user                                 : "user_id:id"
+auth_user_user_permissions                 -[#595959,plain]-^  auth_permission                           : "permission_id:id"
+auth_user_user_permissions                 -[#595959,plain]-^  auth_user                                 : "user_id:id"
+cmpf_ltgs_le                               -[#595959,plain]-^  tbl_business_groups                       : "business_grp_id:business_group_id"
+cmpf_ltgs_le                               -[#595959,plain]-^  tbl_legal_entities                        : "legal_entity_id"
+cmpf_ltgs_le_contract_hist                 -[#595959,plain]-^  cmpf_ltgs_le                              : "le_id"
+cmpf_ltgs_le_contract_hist                 -[#595959,plain]-^  tbl_business_groups                       : "business_grp_id:business_group_id"
+cmpf_ltgs_le_contract_hist                 -[#595959,plain]-^  tbl_legal_entities                        : "legal_entity_id"
+cmpf_ltgs_le_dmn                           -[#595959,plain]-^  tbl_domains                               : "dmn_id:domain_id"
+cmpf_ltgs_le_dmn                           -[#595959,plain]-^  tbl_legal_entities                        : "le_id:legal_entity_id"
+cmpf_ltgs_le_dmn_hist                      -[#595959,plain]-^  tbl_domains                               : "dmn_id:domain_id"
+cmpf_ltgs_le_dmn_hist                      -[#595959,plain]-^  tbl_legal_entities                        : "le_id:legal_entity_id"
+cmpf_ltgs_mstr                             -[#595959,plain]-^  cmpf_ltgs_mstr_type                       : "mstr_type_id"
+cmpf_ltgs_unit_dmn                         -[#595959,plain]-^  tbl_domains                               : "dmn_id:domain_id"
+cmpf_ltgs_unit_dmn                         -[#595959,plain]-^  tbl_units                                 : "unit_id"
+django_admin_log                           -[#595959,plain]-^  auth_user                                 : "user_id:id"
+django_admin_log                           -[#595959,plain]-^  django_content_type                       : "content_type_id:id"
+sso_internal_persistentid                  -[#595959,plain]-^  auth_user                                 : "user_id:id"
+sso_internal_persistentid                  -[#595959,plain]-^  sso_internal_serviceprovider              : "sp_id:id"
+tbl_business_groups                        -[#595959,plain]-^  tbl_client_groups                         : "client_id"
+tbl_categories                             -[#595959,plain]-^  tbl_client_groups                         : "client_id"
+tbl_categories                             -[#595959,plain]-^  tbl_legal_entities                        : "legal_entity_id"
+tbl_client_database_info                   -[#595959,plain]-^  tbl_client_database                       : "client_database_id"
+tbl_client_email_verification              -[#595959,plain]-^  tbl_verification_type                     : "verification_type_id"
+tbl_client_reports                         -[#595959,plain]-^  tbl_client_groups                         : "client_id"
+tbl_client_users                           -[#595959,plain]-^  tbl_client_groups                         : "client_id"
+tbl_cmpf_vndr_le                           -[#595959,plain]-^  tbl_business_groups                       : "business_grp_id:business_group_id"
+tbl_cmpf_vndr_le                           -[#595959,plain]-^  tbl_legal_entities                        : "le_id:legal_entity_id"
+tbl_cmpf_vndr_le_contract_hstry            -[#595959,plain]-^  tbl_business_groups                       : "business_grp_id:business_group_id"
+tbl_cmpf_vndr_le_contract_hstry            -[#595959,plain]-^  tbl_cmpf_vndr_le                          : "vndr_le_id"
+tbl_cmpf_vndr_le_contract_hstry            -[#595959,plain]-^  tbl_legal_entities                        : "legal_entity_id"
+tbl_cmpf_vndr_le_dmn                       -[#595959,plain]-^  tbl_domains                               : "dmn_id:domain_id"
+tbl_cmpf_vndr_le_dmn                       -[#595959,plain]-^  tbl_legal_entities                        : "le_id:legal_entity_id"
+tbl_compliance_docs                        -[#595959,plain]-^  tbl_compliances                           : "compliance_id"
+tbl_compliance_due_extn                    -[#595959,plain]-^  tbl_compliances                           : "compliance_id"
+tbl_compliance_due_extn_hst                -[#595959,plain]-^  tbl_compliance_due_extn                   : "extn_id"
+tbl_compliance_due_extn_hst                -[#595959,plain]-^  tbl_compliances                           : "compliance_id"
+tbl_compliance_update_history              -[#595959,plain]-^  tbl_compliance_criticality                : "criticality_id"
+tbl_compliance_update_history              -[#595959,plain]-^  tbl_compliance_frequency                  : "frequency_id"
+tbl_compliance_update_history              -[#595959,plain]-^  tbl_statutories                           : "statutory_id"
+tbl_compliance_update_history              -[#595959,plain]-^  tbl_statutory_natures                     : "statutory_nature_id"
+tbl_compliances                            -[#595959,plain]-^  tbl_compliance_criticality                : "criticality_id"
+tbl_compliances                            -[#595959,plain]-^  tbl_compliance_frequency                  : "frequency_id"
+tbl_compliances                            -[#595959,plain]-^  tbl_statutories                           : "statutory_id"
+tbl_compliances                            -[#595959,plain]-^  tbl_statutory_natures                     : "statutory_nature_id"
+tbl_divisions                              -[#595959,plain]-^  tbl_client_groups                         : "client_id"
+tbl_divisions                              -[#595959,plain]-^  tbl_legal_entities                        : "legal_entity_id"
+tbl_email_verification                     -[#595959,plain]-^  tbl_verification_type                     : "verification_type_id"
+tbl_employee_master                        -[#595959,plain]-^  tbl_hierarchy_levels                      : "level_id"
+tbl_event_comp_mapping                     -[#595959,plain]-^  tbl_event_master                          : "event_id"
+tbl_event_comp_mapping_stg                 -[#595959,plain]-^  tbl_event_master                          : "event_id"
+tbl_event_comp_pr_ch_mapping               -[#595959,plain]-^  tbl_event_master                          : "event_id"
+tbl_event_comp_pr_ch_mapping_stg           -[#595959,plain]-^  tbl_event_master                          : "event_id"
+tbl_event_master                           -[#595959,plain]-^  tbl_countries                             : "country_id"
+tbl_forms                                  -[#595959,plain]-^  tbl_form_type                             : "form_type_id"
+tbl_geographies                            -[#595959,plain]-^  tbl_geography_levels                      : "level_id"
+tbl_geography_levels                       -[#595959,plain]-^  tbl_countries                             : "country_id"
+tbl_le_product_details                     -[#595959,plain]-^  tbl_legal_entities                        : "legal_entity_id"
+tbl_legal_entities                         -[#595959,plain]-^  tbl_client_groups                         : "client_id"
+tbl_legal_entities                         -[#595959,plain]-^  tbl_countries                             : "country_id"
+tbl_legal_entity_domains                   -[#595959,plain]-^  tbl_domains                               : "domain_id"
+tbl_legal_entity_domains                   -[#595959,plain]-^  tbl_legal_entities                        : "legal_entity_id"
+tbl_mapped_industries                      -[#595959,plain]-^  tbl_compliances                           : "compliance_id"
+tbl_mapped_industries                      -[#595959,plain]-^  tbl_organisation                          : "organisation_id"
+tbl_mapped_locations                       -[#595959,plain]-^  tbl_compliances                           : "compliance_id"
+tbl_mapped_locations                       -[#595959,plain]-^  tbl_geographies                           : "geography_id"
+tbl_messages                               -[#595959,plain]-^  tbl_user_category                         : "user_category_id"
+tbl_mobile_registration                    -[#595959,plain]-^  tbl_session_types                         : "device_type_id:session_type_id"
+tbl_mobile_registration                    -[#595959,plain]-^  tbl_users                                 : "user_id"
+tbl_organisation                           -[#595959,plain]-^  tbl_countries                             : "country_id"
+tbl_organisation                           -[#595959,plain]-^  tbl_domains                               : "domain_id"
+tbl_postalcode_master                      -[#595959,plain]-^  tbl_countries                             : "country_id"
+tbl_postalcode_master                      -[#595959,plain]-^  tbl_timezones                             : "tz_id"
+tbl_sso_conf                               -[#595959,plain]-^  tbl_client_groups                         : "client_id"
+tbl_statutories                            -[#595959,plain]-^  tbl_statutory_levels                      : "level_id"
+tbl_statutory_levels                       -[#595959,plain]-^  tbl_countries                             : "country_id"
+tbl_statutory_levels                       -[#595959,plain]-^  tbl_domains                               : "domain_id"
+tbl_task_sub_group                         -[#595959,plain]-^  tbl_task_group_master                     : "tsk_grp_id"
+tbl_timezones                              -[#595959,plain]-^  tbl_countries                             : "country_id"
+tbl_unitcode_label                         -[#595959,plain]-^  tbl_client_groups                         : "client_id"
+tbl_unitcode_label                         -[#595959,plain]-^  tbl_legal_entities                        : "legal_entity_id"
+tbl_units                                  -[#595959,plain]-^  tbl_client_groups                         : "client_id"
+tbl_units                                  -[#595959,plain]-^  tbl_geographies                           : "geography_id"
+tbl_units                                  -[#595959,plain]-^  tbl_legal_entities                        : "legal_entity_id"
+tbl_units                                  -[#595959,plain]-^  tbl_timezones                             : "tz_id"
+tbl_user_countries                         -[#595959,plain]-^  tbl_countries                             : "country_id"
+tbl_user_countries                         -[#595959,plain]-^  tbl_users                                 : "user_id"
+tbl_user_domains                           -[#595959,plain]-^  tbl_domains                               : "domain_id"
+tbl_user_domains                           -[#595959,plain]-^  tbl_users                                 : "user_id"
+tbl_user_groups                            -[#595959,plain]-^  tbl_user_category                         : "user_category_id"
+tbl_user_password_history                  -[#595959,plain]-^  tbl_user_login_details                    : "user_id"
+tbl_user_sessions                          -[#595959,plain]-^  tbl_session_types                         : "session_type_id"
+tbl_users                                  -[#595959,plain]-^  tbl_user_category                         : "user_category_id"
+tbl_users                                  -[#595959,plain]-^  tbl_user_groups                           : "user_group_id"
+tbl_vertical_zone_countries                -[#595959,plain]-^  tbl_vertical_zone                         : "vertical_zone_id"
+@enduml

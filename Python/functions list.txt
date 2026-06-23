@@ -1,0 +1,75 @@
+* `lambda`
+* `map()`
+* `filter()`
+* `reduce()`
+* `zip()`
+* `enumerate()`
+* `sorted()`
+* `any()`
+* `all()`
+* `iter()`
+* `next()`
+* `reversed()`
+* `sum()`
+* `min()`
+* `max()`
+* `super()`
+* `property()`
+* `classmethod`
+* `staticmethod`
+* `getattr()`
+* `setattr()`
+* `hasattr()`
+* `delattr()`
+* `isinstance()`
+* `issubclass()`
+* `callable()`
+* `functools.partial`
+* `functools.wraps`
+* `functools.lru_cache`
+* `functools.singledispatch`
+* `operator.itemgetter`
+* `operator.attrgetter`
+* `operator.methodcaller`
+* `itertools.chain`
+* `itertools.islice`
+* `itertools.groupby`
+* `itertools.product`
+* `itertools.permutations`
+* `itertools.combinations`
+* `itertools.accumulate`
+* `itertools.cycle`
+* `itertools.repeat`
+* `itertools.starmap`
+* generator functions
+* generator expressions
+* coroutine functions (`async def`)
+* async generators
+* recursive functions
+* higher-order functions
+* closures
+* decorators
+* context managers (`__enter__`, `__exit__`)
+* magic methods / dunder methods
+* abstract methods
+* overloaded functions via `typing.overload`
+* variadic functions (`*args`, `**kwargs`)
+
+
+
+
+typing
+decorators
+generators
+async/await
+FastAPI
+pytest
+SQLAlchemy
+Pydantic
+packaging
+logging
+concurrency
+performance
+design patterns
+API security
+clean architecture

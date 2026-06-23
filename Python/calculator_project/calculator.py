@@ -4,11 +4,48 @@ import inspect
 from dataclasses import dataclass, asdict
 from pathlib import Path
 from datetime import datetime
+from abc import ABC, abstractmethod
+
 
 """
-create a class calculator class
-add all four functions with type checked
+
+create a calcualtor class at the beginning (ABSTRACT)   ===>    [Done]
+create a helper class
+create a database class
+    create to insert into redis
+    create to insert into mongodb
+    create to insert intoi mysql
+Error handling for everything
+create APIs, use fast api
+    
+
+
+
 """
+
+class StandardCalculator(ABC):        
+    
+    @abstractmethod
+    def calPlus(self, value1: int|float, value2: int|float) -> float:        
+        pass
+    
+    
+    @abstractmethod
+    def calMinus(self, value1: int|float, value2: int|float) -> float:
+        pass
+            
+    
+    @abstractmethod
+    def calMultiply(self, value1: int|float, value2: int|float) -> float:
+        pass   
+    
+    
+    @abstractmethod
+    def calDivide(self, value1: int|float, value2: int|float) -> float:
+        pass
+    
+    
+    
 
 
 class Helper:
@@ -35,7 +72,7 @@ class Helper:
         
 
 @dataclass
-class Calculator:
+class Calculator(StandardCalculator):
     def __init__(self):
         self.helper = Helper()
     
@@ -65,9 +102,11 @@ class Calculator:
     
     
     @typechecked
-    def CalDivide(self, value1: int|float, value2: int|float) -> float:
-        pass
-    
+    def calDivide(self, value1: int|float, value2: int|float) -> float:
+        data = value1 / value2
+        formatted_data = self.helper.valuFormatter(value1, value2, "divide", data)
+        self.helper.storeData(formatted_data)
+        return data
     
    
 
@@ -75,3 +114,4 @@ calac = Calculator()
 pprint(calac.calPlus(2, 8))
 pprint(calac.calMinus(2, 8))
 pprint(calac.calMultiply(2, 8))
+pprint(calac.calDivide(2, 8))
